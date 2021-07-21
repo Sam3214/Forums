@@ -1,0 +1,17 @@
+{% extends 'core/index.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+                <h1 class="title">Welcome to Newstead Forum</h1>
+                <button class="button is-success" style="font-size: 20px;">
+                    <a href="{% url 'submit' %}" class="navbar-item"><b>Create new discussion</b></a>
+                </button>
+            </div>
+        </div>
+
+        {% include 'feed/parts/feeds.html' %}
+        
+    </div>
+{% endblock %}

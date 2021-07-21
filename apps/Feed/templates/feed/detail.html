@@ -1,0 +1,121 @@
+{% extends 'core/index.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+                <h1 class="title">{{ feed.title }}</h1>
+                <h2 class="subtitle">{{ feed.number_of_votes }} votes</h2>
+            
+                <strong>By: </strong><a href="{% url 'userprofile' feed.created_by.username %}">{{ feed.created_by.username }}</a> {{ feed.created_at|timesince }} ago<br>
+                <strong>Visit for more info:<br> </strong><a href="{{ feed.url }}" target="_blank">{{ feed.url }}</a>
+            
+                <hr>
+
+                {% if not feed.created_by == request.user %}<a href="{% url 'vote' feed.id %}?next_page=feed" class="button is-success">Vote</a>{% endif %}
+            </div>
+        </div>
+
+        <div style="width: 100%; display: table;">
+            <div style="display: table-row; height: 100px;">
+                <div style="width: 50%; display: table-cell;">
+                    <div class="columns">
+                        <div class="column is-12">
+                        <hr>
+                        <h2 class="subtitle">For</h2>
+                        {% for points in feed.discussions.all %}
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                    <strong>{{ points.body }}</strong>
+                                    <br>
+                                    <a href="{% url 'userprofile' feed.created_by.username %}">{{ points.created_by.username }} </a><small>{{ points.created_at|timesince }} ago</small><br>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <p>No discussions yet!</p>
+                    {% endfor %}
+                    <div class="columns">
+            <div class="column is-12">
+                <h2 class="subtitle">Add your points</h2>
+
+                {% if request.user.is_authenticated %}
+                    <form method="post" action=".">
+                        {% csrf_token %}
+
+                        {{ fform.as_p }}
+
+                        <div class="field">
+                            <div class="field">
+                                <button name="fform" class="button is-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <p>Please log in to discuss!</p>
+                {% endif %}
+            </div>
+            </div>    
+                    </div>
+                    </div>
+                </div>
+                <div style="width: 100%; display: table;">
+                    <div style="display: table-row; height: 100px;">
+                        <div style="width: 50%; display: table-cell;">
+                            <div class="columns">
+                                <div class="column is-12">
+                                <hr>
+                                <h2 class="subtitle">Against</h2>
+                                {% for comments in feed.discussions2.all %}
+                                <article class="media">
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p> 
+                                            <strong>{{ comments.body }}</strong>
+                                            <br>
+                                            <a href="{% url 'userprofile' feed.created_by.username %}">{{ comments.created_by.username }} </a><small>{{ comments.created_at|timesince }} ago</small><br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+                        {% empty %}
+                            <p>No discussions yet!</p>
+                        {% endfor %}
+                        <div class="columns">
+                            <div class="column is-12">
+                                <h2 class="subtitle">Add your points</h2>
+                
+                                {% if request.user.is_authenticated %}
+                                    <form method="post" action=".">
+                                        {% csrf_token %}
+                
+                                        {{ aform.as_p }}
+                
+                                        <div class="field">
+                                            <div class="field">
+                                                <button name="aform" class="button is-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                {% else %}
+                                    <p>Please log in to discuss!</p>
+                                {% endif %}
+                            </div>
+                            </div>  
+                        </div>
+                        </div>
+                        </div>
+                        </div>  
+                        
+                <hr>
+                
+            </div>
+        </div>
+    
+    </div>
+{% endblock %}
+
+

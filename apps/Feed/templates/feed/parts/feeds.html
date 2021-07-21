@@ -1,0 +1,21 @@
+<div class="columns">
+    <div class="column is-12">
+        <table class="table is-striped is-fullwidth">
+            <tbody>
+                {% for feed in feeds %}
+                    <tr>
+                        <td>
+                            <b><a href="{{ feed.url }}" target="_blank">{{ feed.title }}</a></b>
+                            <p>
+                                {{ feed.number_of_votes }} votes by {{ feed.created_by.username }} <small>{{ feed.created_at|timesince }} ago </small>
+                                <br>
+                                {% if not feed.created_by == request.user %}<a href="{% url 'vote' feed.id %}">Vote</a>{% endif %} &nbsp;| &nbsp;
+                                <a href="{% url 'feed' feed.id %}">Discuss</a>
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
